@@ -10,7 +10,7 @@ const skills = [
   ["JavaScript", SiJavascript], ["React.js", FaReact], ["Next.js", SiNextdotjs],
   ["React Native / Expo", FaMobileScreen], ["PHP", SiPhp], ["Laravel", SiLaravel],
   ["MySQL / SQL", SiMysql], ["MongoDB", SiMongodb], ["Node.js / Express", SiNodedotjs],
-  ["REST APIs", FaCode], ["AWS S3 / CloudFront", FaCloud], ["Git & GitHub", FaGithub]
+  ["REST APIs", FaCode], ["AWS S3 / CloudFront", FaCloud], ["Git & GitHub", FaGithub] 
 ];
 
 const projects = [

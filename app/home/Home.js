@@ -1,23 +1,33 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, MotionConfig, useInView, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig, useInView, useScroll, useSpring, useTransform } from "framer-motion";
 import {
-  FaArrowDown, FaArrowUp, FaArrowUpRightFromSquare, FaBars, FaBriefcase, FaCloud, FaCode,
-  FaDatabase, FaEnvelope, FaGithub, FaLocationDot, FaMobileScreen, FaPhone, FaReact, FaXmark
+  FaArrowRight, FaArrowUp, FaArrowUpRightFromSquare, FaBars, FaBriefcase, FaCloud, FaCode, FaDatabase,
+  FaDownload, FaEye, FaGithub, FaInstagram, FaLocationDot, FaMobileScreen, FaReact, FaWhatsapp, FaXmark
 } from "react-icons/fa6";
-import { SiJavascript, SiLaravel, SiMongodb, SiMysql, SiNextdotjs, SiNodedotjs, SiPhp } from "react-icons/si";
+import { SiGmail, SiJavascript, SiLaravel, SiMongodb, SiMysql, SiNextdotjs, SiNodedotjs, SiPhp } from "react-icons/si";
 import "./Home.css";
 
 /* ---------------------------------- CONFIG ---------------------------------- */
-// Optional: your own PHP endpoint. Leave empty to use the free counterapi.dev service.
-const VISITOR_ENDPOINT = "";
-// Change this namespace to something unique to you (public free counter key).
-const COUNTER_NAMESPACE = "rohansingh-portfolio-2026";
-const COUNTER_KEY = "visits";
+// Files inside the /public folder (the leading slash is required)
+const RESUME_FILE = "/Rohan_Singh_Resume.pdf"; // <-- change if your resume file name is different
+const RESUME_NAME = "Rohan_Singh_Resume.pdf"; // file name used when the visitor downloads it
+const PHOTO_FILE = "/rohan.jpg"; // <-- change if your photo file name is different
 
+// Contact details
 const EMAIL = "rohansingh5594@gmail.com";
-const PHONE = "+919324519782";
+const WHATSAPP_NUMBER = "919324519782"; // country code + number, no plus sign
+const WHATSAPP_DISPLAY = "+91 93245 19782";
+const INSTAGRAM_USERNAME = "your_instagram_username"; // <-- change to your Instagram username (without @)
+
+const WA_MESSAGE = "Hi Rohan, I saw your portfolio and would like to connect.";
+const MAIL_SUBJECT = "Hello Rohan";
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
+const INSTAGRAM_LINK = `https://ig.me/m/${INSTAGRAM_USERNAME}`;
+const MAILTO_LINK = `mailto:${EMAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}`;
+const GMAIL_LINK = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${encodeURIComponent(MAIL_SUBJECT)}`;
+
 const ROLES = ["Full Stack Developer", "Next.js Builder", "PHP & MySQL Engineer", "API Integrator"];
 const NAV = ["About", "Skills", "Work", "Journey", "Contact"];
 const EASE = [0.22, 0.8, 0.2, 1];
@@ -64,6 +74,20 @@ const metrics = [
   { to: 360, suffix: "°", label: "FULL STACK FOCUS" }
 ];
 
+// Gmail opens the web compose window on desktop, and the mail app on mobile
+const openGmail = (e) => {
+  const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (mobile) return;
+  e.preventDefault();
+  window.open(GMAIL_LINK, "_blank", "noopener,noreferrer");
+};
+
+const channels = [
+  { key: "wa", name: "WHATSAPP", value: WHATSAPP_DISPLAY, hint: "Opens a direct chat", href: WHATSAPP_LINK, icon: FaWhatsapp, external: true },
+  { key: "ig", name: "INSTAGRAM", value: `@${INSTAGRAM_USERNAME}`, hint: "Opens a direct message", href: INSTAGRAM_LINK, icon: FaInstagram, external: true },
+  { key: "gm", name: "GMAIL", value: EMAIL, hint: "Opens a new mail", href: MAILTO_LINK, icon: SiGmail, onClick: openGmail }
+];
+
 /* ------------------------------- ANIMATION BITS ------------------------------ */
 // Generic fade-up with a soft blur, delay is controlled through the `custom` prop
 const fadeUp = {
@@ -106,8 +130,17 @@ function Title({ a, b, className = "" }) {
 function Label({ children }) {
   return (
     <motion.p className="label" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-      <i /> {children}
+      <motion.i initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2, ease: EASE }} /> {children}
     </motion.p>
+  );
+}
+
+function ResumeButtons() {
+  return (
+    <div className="resume-btns">
+      <a href={RESUME_FILE} target="_blank" rel="noreferrer" className="btn-primary shine"><FaEye /> View Resume</a>
+      <a href={RESUME_FILE} download={RESUME_NAME} className="btn-ghost"><FaDownload /> Download Resume</a>
+    </div>
   );
 }
 
@@ -223,38 +256,6 @@ function NetworkBackground() {
 }
 
 /* ------------------------------------ HOOKS ------------------------------------ */
-// Shared visitor request so React strict mode does not count twice in development.
-let visitorRequest = null;
-
-function useVisitors() {
-  const [count, setCount] = useState(null);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    let alive = true;
-    if (!visitorRequest) {
-      let seen = false;
-      try { seen = localStorage.getItem("rs_visited") === "1"; } catch {}
-      const base = VISITOR_ENDPOINT || `https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${COUNTER_KEY}`;
-      const url = VISITOR_ENDPOINT ? `${base}?hit=${seen ? 0 : 1}` : seen ? base : `${base}/up`;
-      visitorRequest = fetch(url)
-        .then((r) => r.json())
-        .then((d) => {
-          const n = Number(d.count ?? d.value);
-          if (!Number.isFinite(n)) throw new Error("bad response");
-          try { localStorage.setItem("rs_visited", "1"); } catch {}
-          return n;
-        });
-    }
-    visitorRequest
-      .then((n) => alive && setCount(n))
-      .catch(() => alive && setError(true));
-    return () => { alive = false; };
-  }, []);
-
-  return { count, error };
-}
-
 function CountUp({ to, format = (n) => String(n) }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
@@ -302,15 +303,27 @@ function RoleRotator() {
   );
 }
 
+// Chat bubble entrance for the contact preview
+const bubble = (i) => ({
+  initial: { opacity: 0, scale: 0.85, y: 14 },
+  whileInView: { opacity: 1, scale: 1, y: 0 },
+  viewport: { once: true },
+  transition: { delay: 0.3 + i * 0.55, duration: 0.5, ease: EASE }
+});
+
 /* ----------------------------------- PAGE ----------------------------------- */
 export default function Home() {
   const [menu, setMenu] = useState(false);
   const [active, setActive] = useState("home");
   const [showTop, setShowTop] = useState(false);
-  const { count, error } = useVisitors();
+  const [hideNav, setHideNav] = useState(false);
+  const [imgOk, setImgOk] = useState(true);
+  const lastY = useRef(0);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+  // Photo moves slightly slower than the page for a parallax feel
+  const photoY = useTransform(scrollY, [0, 700], [0, -50]);
 
   const timelineRef = useRef(null);
   const { scrollYProgress: tlProgress } = useScroll({ target: timelineRef, offset: ["start 75%", "end 60%"] });
@@ -322,8 +335,14 @@ export default function Home() {
     return () => { document.body.style.overflow = ""; };
   }, [menu]);
 
+  // Back-to-top visibility and navbar hide on scroll down / show on scroll up
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 600);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setShowTop(y > 600);
+      setHideNav(y > 120 && y > lastY.current);
+      lastY.current = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -340,15 +359,13 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  const visitorText = error ? "—" : count === null ? "···" : count.toLocaleString("en-IN");
-
   return (
     <MotionConfig reducedMotion="user">
       <main className="portfolio" id="home">
         <NetworkBackground />
 
         {/* NAVBAR */}
-        <motion.header className="nav" initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, ease: EASE }}>
+        <motion.header className="nav" initial={{ y: -80, opacity: 0 }} animate={{ y: hideNav && !menu ? -100 : 0, opacity: 1 }} transition={{ duration: 0.45, ease: EASE }}>
           <div className="nav-inner">
             <a className="logo" href="#home">rohan<span>®</span></a>
             <nav className="nav-links">
@@ -362,7 +379,7 @@ export default function Home() {
                 );
               })}
             </nav>
-            <a className="nav-cta" href={`mailto:${EMAIL}`}>Let's talk <FaArrowUpRightFromSquare /></a>
+            <a className="nav-cta" href="#contact">Let's talk <FaArrowRight /></a>
             <button className="burger" onClick={() => setMenu(true)} aria-label="Open menu"><FaBars /></button>
             <motion.i className="nav-progress" style={{ scaleX: progress }} />
           </div>
@@ -401,53 +418,38 @@ export default function Home() {
               </h1>
               <motion.p variants={fadeUp} className="role-line"><span className="prompt">›</span> <RoleRotator /></motion.p>
               <motion.p variants={fadeUp} className="intro">I'm Rohan Singh — a full stack developer building responsive web experiences, mobile features and dependable backend solutions.</motion.p>
-              <motion.div variants={fadeUp} className="hero-actions">
-                <a href="#work" className="btn-primary shine">Explore my work <FaArrowDown /></a>
-                <a href={`mailto:${EMAIL}`} className="btn-ghost">Get in touch <FaArrowUpRightFromSquare /></a>
-              </motion.div>
+              <motion.div variants={fadeUp}><ResumeButtons /></motion.div>
               <motion.div variants={fadeUp} className="hero-foot"><span>FRONTEND</span><b /><span>BACKEND</span><b /><span>INTEGRATION</span></motion.div>
             </motion.div>
 
             <motion.div className="hero-art" initial={{ opacity: 0, y: 40, scale: 0.96, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }} transition={{ duration: 1, delay: 0.5, ease: EASE }}>
-              <div className="dev-card">
-                <div className="dev-inner">
-                  <div className="dev-bar">
-                    <i /><i /><i />
-                    <span>rohan.dev</span>
-                    <span className="on"><i className="dot" /> online</span>
-                  </div>
-                  <div className="dev-profile">
-                    <div className="avatar">RS</div>
-                    <div>
+              <motion.div className="photo-wrap" style={{ y: photoY }}>
+                <i className="photo-glow" />
+                <div className="photo-card">
+                  <div className="photo-inner">
+                    {imgOk ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img className="photo" src={PHOTO_FILE} alt="Rohan Singh" onError={() => setImgOk(false)} />
+                    ) : (
+                      <div className="photo-fallback">RS</div>
+                    )}
+                    <div className="photo-shade" />
+                    <div className="photo-caption">
                       <h3>Rohan Singh</h3>
                       <p>Full Stack Developer · ENATS LLP</p>
                     </div>
                   </div>
-                  <div className="code">
-                    {[
-                      <><span className="k">const</span> <span className="n">rohan</span> = {"{"}</>,
-                      <>&nbsp;&nbsp;role: <span className="s">"Full Stack Developer"</span>,</>,
-                      <>&nbsp;&nbsp;stack: [<span className="s">"Next.js"</span>, <span className="s">"PHP"</span>, <span className="s">"MySQL"</span>],</>,
-                      <>&nbsp;&nbsp;openToWork: <span className="k">true</span>,</>,
-                      <>{"};"}</>
-                    ].map((line, i) => (
-                      <motion.p key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1 + i * 0.14, duration: 0.5, ease: EASE }}>{line}</motion.p>
-                    ))}
-                  </div>
-                  <div className="dev-chips">
-                    <span><SiNextdotjs /> Next.js</span><span><SiPhp /> PHP</span><span><SiMysql /> MySQL</span><span><FaReact /> React</span>
-                  </div>
-                  <div className="bars" aria-hidden="true">
-                    {Array.from({ length: 18 }).map((_, i) => <i key={i} style={{ "--i": i }} />)}
-                  </div>
                 </div>
-              </div>
+                <motion.div className="fchip c1" animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}><SiNextdotjs /> Next.js</motion.div>
+                <motion.div className="fchip c2" animate={{ y: [0, 10, 0] }} transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}><SiPhp /> PHP · MySQL</motion.div>
+                <motion.div className="fchip c3" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}><FaReact /> React</motion.div>
+                <motion.div className="fchip c4" animate={{ y: [0, 8, 0] }} transition={{ duration: 4.3, repeat: Infinity, ease: "easeInOut" }}><i className="dot" /> Open to work</motion.div>
+              </motion.div>
             </motion.div>
           </div>
 
           <div className="hero-bottom">
             <span>01 / INTRODUCTION</span>
-            <span className="live-pill"><i className="dot" /> LIVE · {visitorText} VISITORS</span>
             <span className="scroll-hint"><i className="wheel"><b /></i> SCROLL</span>
           </div>
         </section>
@@ -471,12 +473,6 @@ export default function Home() {
                 <span>{m.label}</span>
               </motion.div>
             ))}
-            <motion.div className="metric visitor-card shine" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} whileHover={{ y: -5 }}>
-              <strong>
-                {error ? "—" : count === null ? <span className="pulse-text">···</span> : <CountUp to={count} format={(n) => n.toLocaleString("en-IN")} />}
-              </strong>
-              <span><i className="dot" /> PEOPLE VISITED THIS PORTFOLIO</span>
-            </motion.div>
           </div>
         </section>
 
@@ -491,7 +487,7 @@ export default function Home() {
             {skills.map(([name, Icon], i) => (
               <motion.div className="skill-card shine" key={name} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} custom={i % 4} whileHover={{ y: -6 }}>
                 <div className="skill-top"><span className="skill-num">{String(i + 1).padStart(2, "0")}</span><FaArrowUpRightFromSquare className="skill-arrow" /></div>
-                <Icon className="skill-icon" />
+                <Icon className="skill-icon" style={{ "--i": i }} />
                 <span className="skill-name">{name}</span>
               </motion.div>
             ))}
@@ -555,26 +551,70 @@ export default function Home() {
         </section>
 
         {/* CONTACT */}
-        <section className="contact section" id="contact">
-          <Label>05 — LET'S CONNECT</Label>
-          <div className="contact-content">
-            <Title a="Got a challenge?" b="Let's build." className="title-xl" />
-            <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>Open to discussing developer opportunities, collaborations and interesting problems worth solving.</motion.p>
-            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3}>
-              <a className="email-link shine" href={`mailto:${EMAIL}`}><FaEnvelope /> <span>{EMAIL}</span> <FaArrowUpRightFromSquare /></a>
-            </motion.div>
-          </div>
-          <div className="contact-details">
-            <span><FaLocationDot /> MUMBAI, INDIA</span>
-            <a href={`tel:${PHONE}`}><FaPhone /> +91 93245 19782</a>
-            <a href="https://rwitc.com/" target="_blank" rel="noreferrer">RWITC WEBSITE ↗</a>
+        <section className="section contact" id="contact">
+          <div className="contact-panel">
+            <i className="cp-orb o1" /><i className="cp-orb o2" />
+
+            <div className="contact-left">
+              <motion.p className="contact-tag" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <i className="dot" /> OPEN TO NEW OPPORTUNITIES
+              </motion.p>
+              <Title a="Got an idea?" b="Let's talk." className="title-lg" />
+              <motion.p className="contact-text" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>
+                Pick whichever is easiest for you. WhatsApp and Instagram open a direct chat with me, and Gmail opens a ready-to-send mail.
+              </motion.p>
+
+              <div className="chat">
+                <motion.div className="bubble you" {...bubble(0)}>Hi Rohan, I have a project idea.</motion.div>
+                <motion.div className="bubble me" {...bubble(1)}>Sounds great. Tell me more!</motion.div>
+                <motion.div className="typing" {...bubble(2)}><i /><i /><i /></motion.div>
+              </div>
+
+              <motion.span className="contact-loc" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3}>
+                <FaLocationDot /> MUMBAI, INDIA
+              </motion.span>
+            </div>
+
+            <div className="contact-right">
+              {channels.map((c, i) => {
+                const Icon = c.icon;
+                return (
+                  <motion.a
+                    key={c.key}
+                    className={`channel ${c.key} shine`}
+                    href={c.href}
+                    onClick={c.onClick}
+                    {...(c.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                    custom={i + 1}
+                    whileHover={{ x: 6 }}
+                  >
+                    <span className="ch-icon"><Icon /></span>
+                    <span className="ch-text">
+                      <span className="ch-name">{c.name}</span>
+                      <span className="ch-value">{c.value}</span>
+                      <span className="ch-hint">{c.hint}</span>
+                    </span>
+                    <span className="ch-arrow"><FaArrowRight /></span>
+                  </motion.a>
+                );
+              })}
+
+              <motion.div className="contact-resume" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={4}>
+                <p>WANT THE FULL STORY?</p>
+                <ResumeButtons />
+              </motion.div>
+            </div>
           </div>
         </section>
 
         <footer className="footer">
           <a className="logo" href="#home">rohan<span>®</span></a>
           <span>DESIGNED & BUILT BY ROHAN SINGH</span>
-          <span>{error ? "" : `${visitorText} VISITS · `}© 2026</span>
+          <span>© 2026</span>
         </footer>
 
         <AnimatePresence>

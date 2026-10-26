@@ -13,13 +13,13 @@ import "./Home.css";
 // Files inside the /public folder (the leading slash is required)
 const RESUME_FILE = "/Rohan_Singh_Resume.pdf"; // <-- change if your resume file name is different
 const RESUME_NAME = "Rohan_Singh_Resume.pdf"; // file name used when the visitor downloads it
-const PHOTO_FILE = "/rohan.jpg"; // <-- change if your photo file name is different
+const PHOTO_FILE = "/rohan.png"; // <-- change if your photo file name is different
 
 // Contact details
 const EMAIL = "rohansingh5594@gmail.com";
 const WHATSAPP_NUMBER = "919324519782"; // country code + number, no plus sign
 const WHATSAPP_DISPLAY = "+91 93245 19782";
-const INSTAGRAM_USERNAME = "your_instagram_username"; // <-- change to your Instagram username (without @)
+const INSTAGRAM_USERNAME = "rohansingh._19"; // <-- change to your Instagram username (without @)
 
 const WA_MESSAGE = "Hi Rohan, I saw your portfolio and would like to connect.";
 const MAIL_SUBJECT = "Hello Rohan";

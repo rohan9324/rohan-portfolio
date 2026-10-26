@@ -13,7 +13,7 @@ import "./Home.css";
 // Files inside the /public folder (the leading slash is required)
 const RESUME_FILE = "/Rohan_Singh_Resume.pdf"; // <-- change if your resume file name is different
 const RESUME_NAME = "Rohan_Singh_Resume.pdf"; // file name used when the visitor downloads it
-const PHOTO_FILE = "/rohan.png"; // <-- change if your photo file name is different
+const PHOTO_FILE = "/rohan.jpg"; // <-- change if your photo file name is different
 
 // Contact details
 const EMAIL = "rohansingh5594@gmail.com";

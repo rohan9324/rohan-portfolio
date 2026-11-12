@@ -5,25 +5,25 @@ import {
   AnimatePresence, motion, MotionConfig, useInView, useMotionValue, useScroll, useSpring, useTransform
 } from "framer-motion";
 import {
-  FaArrowRight, FaArrowUp, FaArrowUpRightFromSquare, FaBars, FaCheck, FaCircleHalfStroke, FaCloud, FaCode, FaCopy,
-  FaDownload, FaEye, FaGithub, FaGooglePlay, FaGraduationCap, FaHouse, FaInstagram, FaLocationDot, FaMagnifyingGlass,
-  FaMobileScreen, FaMoon, FaPalette, FaReact, FaSun, FaWhatsapp, FaXmark
+  FaArrowRight, FaArrowUp, FaArrowUpRightFromSquare, FaBars, FaCheck, FaCloud, FaCode, FaCopy,
+  FaDownload, FaEye, FaGithub, FaGooglePlay, FaGraduationCap, FaHouse, FaInstagram, FaLocationDot,
+  FaMagnifyingGlass, FaMobileScreen, FaReact, FaWhatsapp, FaXmark
 } from "react-icons/fa6";
 import { SiGmail, SiJavascript, SiLaravel, SiMongodb, SiMysql, SiNextdotjs, SiNodedotjs, SiPhp } from "react-icons/si";
 import "./Home.css";
 
 /* ---------------------------------- CONFIG ---------------------------------- */
 // Files inside the /public folder (the leading slash is required)
-const RESUME_FILE = "/Rohan_Singh_Resume.pdf"; // change if your resume file name is different
-const RESUME_NAME = "Rohan_Singh_Resume.pdf"; // file name used when the visitor downloads it
-const PHOTO_FILE = "/rohan.jpg"; // change if your photo file name is different
+const RESUME_FILE = "/Rohan_Singh_Resume.pdf";
+const RESUME_NAME = "Rohan_Singh_Resume.pdf";
+const PHOTO_FILE = "/rohan.jpg";
 
 // Contact details
 const EMAIL = "rohansingh5594@gmail.com";
-const WHATSAPP_NUMBER = "919324519782"; // country code + number, no plus sign
+const WHATSAPP_NUMBER = "919324519782";
 const WHATSAPP_DISPLAY = "+91 93245 19782";
 const INSTAGRAM_USERNAME = "rohansingh._19";
-const GITHUB_USERNAME = "rohan9324"; // change if your GitHub username is different
+const GITHUB_USERNAME = "rohan9324";
 
 // Project links
 const RWITC_URL = "https://rwitc.com/";
@@ -42,25 +42,6 @@ const ROLES = ["Full Stack Developer", "Next.js Builder", "PHP & MySQL Engineer"
 const NAV = ["About", "Stack", "Work", "Journey", "Contact"];
 const EASE = [0.22, 0.8, 0.2, 1];
 
-// Accent colour themes. a1-a3 are used in dark mode, l1-l3 are darker variants used in light mode
-// so that text stays readable on a light background.
-const THEMES = [
-  { id: "aurora", name: "Aurora", a1: "#7c8cff", a2: "#2ee6c0", a3: "#f472b6", l1: "#4f5bd5", l2: "#0a9d83", l3: "#d6307f" },
-  { id: "ocean", name: "Ocean", a1: "#4f8cff", a2: "#22d3ee", a3: "#a78bfa", l1: "#2563eb", l2: "#0e8fb0", l3: "#7c4dde" },
-  { id: "ember", name: "Ember", a1: "#ff7a45", a2: "#ffc857", a3: "#ff4d8d", l1: "#e0501c", l2: "#b9770e", l3: "#d61f6b" },
-  { id: "violet", name: "Violet", a1: "#a78bfa", a2: "#f472b6", a3: "#60a5fa", l1: "#7c4dde", l2: "#c026a3", l3: "#2563eb" },
-  { id: "lime", name: "Lime", a1: "#b6f23d", a2: "#34d399", a3: "#22d3ee", l1: "#5b8a00", l2: "#0f9d6b", l3: "#0e8fb0" }
-];
-const MODES = [
-  { id: "system", name: "System", icon: FaCircleHalfStroke },
-  { id: "light", name: "Light", icon: FaSun },
-  { id: "dark", name: "Dark", icon: FaMoon }
-];
-const hexToRgb = (h) => {
-  const n = parseInt(h.slice(1), 16);
-  return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
-};
-
 /* ----------------------------------- DATA ----------------------------------- */
 const skills = [
   { name: "JavaScript", icon: SiJavascript, cat: "Frontend" },
@@ -76,27 +57,26 @@ const skills = [
   { name: "AWS S3 / CloudFront", icon: FaCloud, cat: "Cloud & Tools" },
   { name: "Git & GitHub", icon: FaGithub, cat: "Cloud & Tools" }
 ];
-const CATS = ["All", "Frontend", "Backend", "Database", "Cloud & Tools"];
+const CATS = ["Frontend", "Backend", "Database", "Cloud & Tools"];
 
-// Order of this array is the order on the page: User Management, RWITC, Intucate.
-// `links` can hold any number of buttons. Leave it empty for projects without a public link.
+// Order of this array is the order on the page. `links` can be empty for projects without a public link.
 const projects = [
   {
-    title: "User Profile & Task Manager", type: "PERSONAL PROJECT", mock: "tasks", host: "localhost:3000",
+    title: "User Profile & Task Manager", type: "Personal project", mock: "tasks", host: "localhost:3000",
     description: "A responsive PHP application for user management: registration and login, session handling, profile photo uploads, user-detail updates and task CRUD operations.",
     highlights: ["Registration & login", "Session handling", "Profile photo uploads", "User-detail updates", "Task CRUD"],
     stack: ["PHP", "MySQL", "JavaScript", "Bootstrap"],
     links: [], note: "Personal project"
   },
   {
-    title: "RWITC Website & Admin Platform", type: "PROFESSIONAL EXPERIENCE", mock: "site", host: "rwitc.com",
+    title: "RWITC Website & Admin Platform", type: "Professional experience", mock: "site", host: "rwitc.com",
     description: "Worked on the full stack of the Royal Western India Turf Club platform: Next.js pages, PHP admin modules, MySQL-backed APIs, access control, article management, media delivery from S3 and performance troubleshooting.",
     highlights: ["Next.js pages", "PHP admin modules", "API integration", "Access control", "Article management", "Media delivery", "Performance troubleshooting"],
     stack: ["Next.js", "PHP", "MySQL", "AWS S3", "CloudFront"],
     links: [{ label: "Visit live website", url: RWITC_URL, icon: FaArrowUpRightFromSquare }]
   },
   {
-    title: "Intucate — CA Exam Prep", type: "PROFESSIONAL EXPERIENCE", mock: "learn", host: "register.intucate.com",
+    title: "Intucate — CA Exam Prep", type: "Professional experience", mock: "learn", host: "register.intucate.com",
     description: "Frontend work on Intucate, a CA exam-preparation platform, across its registration web app and its Android app: responsive screens, referral-based sign-up flow and clean, fast interfaces for students.",
     highlights: ["Responsive frontend", "Registration & referral sign-up", "Android app screens", "Reusable components", "API integration"],
     stack: ["React", "JavaScript", "REST APIs", "Android"],
@@ -108,17 +88,20 @@ const projects = [
 ].map((p, i) => ({ ...p, number: String(i + 1).padStart(2, "0") }));
 
 const experience = [
-  { date: "2025 — PRESENT", title: "Full Stack Developer", place: "ENATS LLP · Mumbai, India", text: "Building and maintaining web and mobile features, integrating APIs, developing admin modules, managing database-driven functionality and troubleshooting production issues." },
-  { date: "JUL 2025", title: "Full Stack Developer Training", place: "SDAC InfoTech · Grade A", text: "Full Stack Developer training and practical software development foundations.", link: "https://drive.google.com/file/d/1oFL0dVD5p2PNPjLd4ORSGhscVOissay1/view" },
+  { date: "2025 — Present", title: "Full Stack Developer", place: "ENATS LLP · Mumbai, India", text: "Building and maintaining web and mobile features, integrating APIs, developing admin modules, managing database-driven functionality and troubleshooting production issues." },
+  { date: "Jul 2025", title: "Full Stack Developer Training", place: "SDAC InfoTech · Grade A", text: "Full Stack Developer training and practical software development foundations.", link: "https://drive.google.com/file/d/1oFL0dVD5p2PNPjLd4ORSGhscVOissay1/view" },
   { date: "2024", title: "B.Sc. Information Technology", place: "Smt. K. G. Mittal Institute of Management, Information Technology and Research", text: "Graduated with 6.95 / 10." },
   { date: "2021 / 2019", title: "HSC & SSC", place: "P. D. Turakhia Junior College / Shivaji Vidya Mandir High School", text: "HSC: 72.67% · SSC: 63.40%." }
 ];
 
 const stats = [
-  { to: 1, suffix: "+", label: "YEAR OF EXPERIENCE" },
-  { to: skills.length, suffix: "", label: "CORE TECHNOLOGIES" },
-  { to: projects.length, suffix: "", label: "PROJECTS SHOWCASED" }
+  { to: 1, suffix: "+", label: "Year of experience" },
+  { to: skills.length, suffix: "", label: "Core technologies" },
+  { to: projects.length, suffix: "", label: "Projects showcased" }
 ];
+
+const ABOUT_TEXT =
+  "I'm a Full Stack Developer at ENATS LLP. I take a real requirement, understand the problem behind it and turn it into a responsive, practical and maintainable product, from the interface to the API to the database.";
 
 // Gmail opens the web compose window on desktop, and the mail app on mobile
 const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -129,36 +112,35 @@ const openGmail = (e) => {
 };
 
 const channels = [
-  { key: "wa", name: "WHATSAPP", value: WHATSAPP_DISPLAY, hint: "Opens a direct chat", href: WHATSAPP_LINK, icon: FaWhatsapp, external: true },
-  { key: "ig", name: "INSTAGRAM", value: `@${INSTAGRAM_USERNAME}`, hint: "Opens a direct message", href: INSTAGRAM_LINK, icon: FaInstagram, external: true },
-  { key: "gm", name: "GMAIL", value: EMAIL, hint: "Opens a new mail", href: MAILTO_LINK, icon: SiGmail, onClick: openGmail },
-  { key: "gh", name: "GITHUB", value: `@${GITHUB_USERNAME}`, hint: "See my code", href: GITHUB_LINK, icon: FaGithub, external: true }
+  { key: "wa", name: "WhatsApp", value: WHATSAPP_DISPLAY, hint: "Opens a direct chat", href: WHATSAPP_LINK, icon: FaWhatsapp, external: true },
+  { key: "ig", name: "Instagram", value: `@${INSTAGRAM_USERNAME}`, hint: "Opens a direct message", href: INSTAGRAM_LINK, icon: FaInstagram, external: true },
+  { key: "gm", name: "Gmail", value: EMAIL, hint: "Opens a new mail", href: MAILTO_LINK, icon: SiGmail, onClick: openGmail },
+  { key: "gh", name: "GitHub", value: `@${GITHUB_USERNAME}`, hint: "See my code", href: GITHUB_LINK, icon: FaGithub, external: true }
 ];
 
 /* ------------------------------- ANIMATION BITS ------------------------------ */
-// Generic fade-up with a soft blur, delay is controlled through the `custom` prop
+// Soft fade used for small supporting elements
 const fadeUp = {
-  hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
-  visible: (i = 0) => ({ opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, delay: i * 0.08, ease: EASE } })
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, delay: i * 0.08, ease: EASE } })
 };
 
-// Word-by-word reveal used for headings
-const wordV = {
-  hidden: { opacity: 0, y: 26, filter: "blur(8px)" },
-  visible: (d = 0) => ({ opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, delay: d, ease: EASE } })
+// Masked slide-up used for headings: the text rises out of an invisible line
+const maskV = {
+  hide: { y: "118%", rotate: 3 },
+  show: (d = 0) => ({ y: "0%", rotate: 0, transition: { duration: 1, delay: d, ease: EASE } })
 };
 
-function Words({ text, className = "", delay = 0, inView = false }) {
+function Lines({ text, className = "", delay = 0, play = true, inView = false }) {
   const words = text.split(" ");
   const trigger = inView
-    ? { whileInView: "visible", viewport: { once: true, amount: 0.6 } }
-    : { animate: "visible" };
+    ? { whileInView: "show", viewport: { once: true, amount: 0.6 } }
+    : { animate: play ? "show" : "hide" };
   return (
-    <span className={className}>
+    <span className={`line-wrap ${className}`}>
       {words.map((w, i) => (
-        <span key={`${w}-${i}`}>
-          <motion.span className="w" variants={wordV} initial="hidden" custom={delay + i * 0.07} {...trigger}>{w}</motion.span>
-          {i < words.length - 1 && " "}
+        <span className="mask" key={`${w}-${i}`}>
+          <motion.span className="mask-in" variants={maskV} initial="hide" custom={delay + i * 0.06} {...trigger}>{w}</motion.span>
         </span>
       ))}
     </span>
@@ -168,19 +150,40 @@ function Words({ text, className = "", delay = 0, inView = false }) {
 function Title({ a, b, className = "" }) {
   return (
     <h2 className={`title ${className}`}>
-      <Words inView text={a} className="t-line" />
-      <Words inView text={b} className="t-line accent" delay={0.18} />
+      <Lines inView text={a} />
+      <Lines inView text={b} className="dim" delay={0.16} />
     </h2>
   );
 }
 
-function Label({ index, children }) {
+function SectionLabel({ children }) {
   return (
     <motion.p className="label" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-      <span className="label-idx">{index}</span>
-      <motion.i initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2, ease: EASE }} />
+      <motion.i initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.15, ease: EASE }} />
       {children}
     </motion.p>
+  );
+}
+
+// Paragraph whose words light up one by one while the page scrolls
+function ScrollWord({ w, range, progress }) {
+  const opacity = useTransform(progress, range, [0.18, 1]);
+  return (
+    <>
+      <motion.span className="sw-word" style={{ opacity }}>{w}</motion.span>{" "}
+    </>
+  );
+}
+function ScrollText({ text, className = "" }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 82%", "end 48%"] });
+  const words = text.split(" ");
+  return (
+    <p ref={ref} className={className}>
+      {words.map((w, i) => (
+        <ScrollWord key={`${w}-${i}`} w={w} progress={scrollYProgress} range={[i / words.length, Math.min(1, (i + 1.6) / words.length)]} />
+      ))}
+    </p>
   );
 }
 
@@ -205,12 +208,12 @@ function Magnetic({ children, strength = 0.3 }) {
 }
 
 // 3D tilt that follows the cursor
-function Tilt({ children, className = "", max = 8 }) {
+function Tilt({ children, className = "", max = 7 }) {
   const ref = useRef(null);
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const rx = useSpring(useTransform(py, [-0.5, 0.5], [max, -max]), { stiffness: 150, damping: 16 });
-  const ry = useSpring(useTransform(px, [-0.5, 0.5], [-max, max]), { stiffness: 150, damping: 16 });
+  const rx = useSpring(useTransform(py, [-0.5, 0.5], [max, -max]), { stiffness: 150, damping: 18 });
+  const ry = useSpring(useTransform(px, [-0.5, 0.5], [-max, max]), { stiffness: 150, damping: 18 });
   const move = (e) => {
     const r = ref.current.getBoundingClientRect();
     px.set((e.clientX - r.left) / r.width - 0.5);
@@ -231,87 +234,32 @@ const spot = (e) => {
   e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
 };
 
+// Endless horizontal ticker
+function Marquee({ items, reverse = false }) {
+  const base = [...items, ...items];
+  const list = [...base, ...base];
+  return (
+    <div className="marquee" aria-hidden="true">
+      <div className={`marquee-track ${reverse ? "rev" : ""}`}>
+        {list.map((t, i) => (<span key={`${t}-${i}`} className="marquee-item">{t}<i /></span>))}
+      </div>
+    </div>
+  );
+}
+
 function ResumeButtons() {
   return (
     <div className="resume-btns">
-      <Magnetic strength={0.2}><a href={RESUME_FILE} target="_blank" rel="noreferrer" className="btn-primary shine"><FaEye /> View Resume</a></Magnetic>
-      <Magnetic strength={0.2}><a href={RESUME_FILE} download={RESUME_NAME} className="btn-ghost"><FaDownload /> Download Resume</a></Magnetic>
+      <Magnetic strength={0.2}><a href={RESUME_FILE} target="_blank" rel="noreferrer" className="btn-primary"><span>View resume</span><FaEye /></a></Magnetic>
+      <Magnetic strength={0.2}><a href={RESUME_FILE} download={RESUME_NAME} className="btn-ghost"><span>Download resume</span><FaDownload /></a></Magnetic>
     </div>
   );
 }
 
 /* ------------------------------------ HOOKS ------------------------------------ */
-// Appearance state: accent theme + light/dark/system mode.
-// - Applies colours as CSS variables on <html> and sets data-theme="light|dark"
-// - Remembers both choices in localStorage
-// - In "system" mode it follows the device setting live
-function useAppearance() {
-  const [themeId, setThemeIdState] = useState(THEMES[0].id);
-  const [mode, setModeState] = useState("system");
-  const [systemDark, setSystemDark] = useState(true);
-  const colorsRef = useRef({ a1: hexToRgb(THEMES[0].a1), a2: hexToRgb(THEMES[0].a2) });
-  const firstRun = useRef(true);
-  const animTimer = useRef(null);
-
-  const resolved = mode === "system" ? (systemDark ? "dark" : "light") : mode;
-
-  // Read saved choices and watch the device colour scheme
-  useEffect(() => {
-    try {
-      const savedTheme = localStorage.getItem("rs_theme");
-      if (savedTheme && THEMES.some((t) => t.id === savedTheme)) setThemeIdState(savedTheme);
-      const savedMode = localStorage.getItem("rs_mode");
-      if (savedMode && MODES.some((m) => m.id === savedMode)) setModeState(savedMode);
-    } catch {}
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setSystemDark(mq.matches);
-    const onChange = (e) => setSystemDark(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  // Apply the colours to the page
-  useEffect(() => {
-    const t = THEMES.find((x) => x.id === themeId) || THEMES[0];
-    const el = document.documentElement;
-    const light = resolved === "light";
-
-    // Short colour cross-fade, but not on the very first paint
-    if (!firstRun.current) {
-      el.classList.add("theme-anim");
-      clearTimeout(animTimer.current);
-      animTimer.current = setTimeout(() => el.classList.remove("theme-anim"), 450);
-    }
-    firstRun.current = false;
-
-    const picked = light ? { a1: t.l1, a2: t.l2, a3: t.l3 } : { a1: t.a1, a2: t.a2, a3: t.a3 };
-    ["a1", "a2", "a3"].forEach((k) => {
-      el.style.setProperty(`--${k}`, picked[k]);
-      el.style.setProperty(`--${k}-rgb`, hexToRgb(picked[k]));
-    });
-    colorsRef.current = { a1: hexToRgb(picked.a1), a2: hexToRgb(picked.a2) };
-    el.dataset.theme = resolved;
-    el.style.colorScheme = resolved;
-  }, [themeId, resolved]);
-
-  useEffect(() => () => clearTimeout(animTimer.current), []);
-
-  const setThemeId = useCallback((id) => {
-    setThemeIdState(id);
-    try { localStorage.setItem("rs_theme", id); } catch {}
-  }, []);
-  const setMode = useCallback((m) => {
-    setModeState(m);
-    try { localStorage.setItem("rs_mode", m); } catch {}
-  }, []);
-  const toggleMode = useCallback(() => setMode(resolved === "dark" ? "light" : "dark"), [resolved, setMode]);
-
-  return { themeId, setThemeId, mode, setMode, resolved, toggleMode, colorsRef };
-}
-
 // Text that "decodes" from random glyphs into the next word
 const GLYPHS = "!<>-_/[]{}=+*^?#";
-function useScramble(words, hold = 2400) {
+function useScramble(words, hold = 2600) {
   const [text, setText] = useState(words[0]);
 
   useEffect(() => {
@@ -390,128 +338,61 @@ function CountUp({ to, format = (n) => String(n) }) {
   return <span ref={ref}>{format(value)}</span>;
 }
 
-/* ------------------------------- ANIMATED BACKGROUND ------------------------------ */
-// Aurora glow + moving grid + particle network + cursor glow + film grain
-function Background({ colorsRef }) {
-  const canvasRef = useRef(null);
-  const bgRef = useRef(null);
+/* ------------------------------------ PRELOADER ----------------------------------- */
+// One orchestrated opening moment: a counter runs, then the curtain lifts to reveal the hero
+function Preloader({ onDone }) {
+  const [n, setN] = useState(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const LINK = 130;
-    const mouse = { x: -9999, y: -9999 };
-    let w = 0, h = 0, raf = 0, particles = [];
-
-    const seed = () => {
-      const count = Math.max(26, Math.min(85, Math.floor((w * h) / 17000)));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
-        r: Math.random() * 1.4 + 0.6
-      }));
+    let raf, timer;
+    const start = performance.now();
+    const duration = 1700;
+    const tick = (now) => {
+      const p = Math.min(1, (now - start) / duration);
+      setN(Math.round(100 * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else timer = setTimeout(() => onDone(true), 350);
     };
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const nw = window.innerWidth;
-      const nh = window.innerHeight;
-      const widthChanged = nw !== w;
-      w = nw; h = nh;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // Re-seed only when the width changes (mobile address bar resize should not reset particles)
-      if (widthChanged || !particles.length) seed();
-    };
-
-    const draw = () => {
-      const c = colorsRef.current;
-      ctx.clearRect(0, 0, w, h);
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        if (!reduce) {
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0 || p.x > w) p.vx *= -1;
-          if (p.y < 0 || p.y > h) p.vy *= -1;
-        }
-        const dx = p.x - mouse.x, dy = p.y - mouse.y;
-        const d = Math.hypot(dx, dy);
-        // Gently push particles away from the cursor
-        if (d < 120 && d > 0) { p.x += (dx / d) * 1.2; p.y += (dy / d) * 1.2; }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c.a1}, 0.7)`;
-        ctx.fill();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const q = particles[j];
-          const dist = Math.hypot(p.x - q.x, p.y - q.y);
-          if (dist < LINK) {
-            ctx.strokeStyle = `rgba(${c.a1}, ${(1 - dist / LINK) * 0.26})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(q.x, q.y);
-            ctx.stroke();
-          }
-        }
-        // Lines between the cursor and nearby particles
-        if (d < 160) {
-          ctx.strokeStyle = `rgba(${c.a2}, ${(1 - d / 160) * 0.5})`;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
-      }
-      if (!reduce) raf = requestAnimationFrame(draw);
-    };
-
-    const onMove = (e) => {
-      mouse.x = e.clientX; mouse.y = e.clientY;
-      if (bgRef.current) {
-        bgRef.current.style.setProperty("--gx", `${e.clientX}px`);
-        bgRef.current.style.setProperty("--gy", `${e.clientY}px`);
-      }
-    };
-    const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
-    const onVisibility = () => {
-      if (document.hidden) cancelAnimationFrame(raf);
-      else if (!reduce) raf = requestAnimationFrame(draw);
-    };
-
-    resize();
-    draw();
-    window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", onMove, { passive: true });
-    document.addEventListener("mouseleave", onLeave);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseleave", onLeave);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [colorsRef]);
+    raf = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(raf); clearTimeout(timer); };
+  }, [onDone]);
 
   return (
-    <div className="bg" ref={bgRef} aria-hidden="true">
-      <i className="aurora a-1" /><i className="aurora a-2" /><i className="aurora a-3" />
+    <motion.div className="preloader" initial={{ y: 0 }} exit={{ y: "-100%" }} transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}>
+      <div className="pre-top">
+        <span>Rohan Singh</span>
+        <span>Portfolio</span>
+      </div>
+      <div className="pre-count">{String(n).padStart(3, "0")}</div>
+      <div className="pre-bar"><motion.i style={{ scaleX: n / 100 }} /></div>
+    </motion.div>
+  );
+}
+
+/* ------------------------------- ANIMATED BACKGROUND ------------------------------ */
+// Slow drifting glow, a faint grid that fades out, a cursor spotlight and film grain
+function Background() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!ref.current) return;
+      ref.current.style.setProperty("--gx", `${e.clientX}px`);
+      ref.current.style.setProperty("--gy", `${e.clientY}px`);
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+  return (
+    <div className="bg" ref={ref} aria-hidden="true">
+      <i className="glow g-1" /><i className="glow g-2" />
       <div className="bg-grid" />
-      <canvas ref={canvasRef} className="bg-canvas" />
       <i className="bg-spot" />
       <i className="grain" />
     </div>
   );
 }
 
-// Smooth ring that follows the cursor (desktop only). Elements can set data-cursor="Label".
+// Cursor: a small dot plus a trailing ring that grows on links and shows labels (desktop only)
 function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
   const [hover, setHover] = useState(false);
@@ -519,10 +400,10 @@ function CustomCursor() {
   const [visible, setVisible] = useState(false);
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const dx = useSpring(x, { stiffness: 600, damping: 40, mass: 0.3 });
-  const dy = useSpring(y, { stiffness: 600, damping: 40, mass: 0.3 });
-  const rx = useSpring(x, { stiffness: 170, damping: 22 });
-  const ry = useSpring(y, { stiffness: 170, damping: 22 });
+  const dx = useSpring(x, { stiffness: 700, damping: 45, mass: 0.3 });
+  const dy = useSpring(y, { stiffness: 700, damping: 45, mass: 0.3 });
+  const rx = useSpring(x, { stiffness: 160, damping: 22 });
+  const ry = useSpring(y, { stiffness: 160, damping: 22 });
 
   useEffect(() => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -595,15 +476,15 @@ function CommandPalette({ open, onClose, actions }) {
           <motion.div
             className="cmd" role="dialog" aria-modal="true" aria-label="Command palette"
             initial={{ opacity: 0, y: -18, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.25, ease: EASE }} onMouseDown={(e) => e.stopPropagation()}
+            transition={{ duration: 0.28, ease: EASE }} onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="cmd-input">
               <FaMagnifyingGlass />
-              <input ref={inputRef} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="Type a command or search..." aria-label="Search commands" />
-              <kbd>ESC</kbd>
+              <input ref={inputRef} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="Type a command or search" aria-label="Search commands" />
+              <kbd>Esc</kbd>
             </div>
             <div className="cmd-list" ref={listRef}>
-              {filtered.length === 0 && <p className="cmd-empty">No results found</p>}
+              {filtered.length === 0 && <p className="cmd-empty">No results. Try another word.</p>}
               {filtered.map((a, i) => {
                 const Icon = a.icon;
                 return (
@@ -616,82 +497,13 @@ function CommandPalette({ open, onClose, actions }) {
               })}
             </div>
             <div className="cmd-foot">
-              <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-              <span><kbd>↵</kbd> select</span>
-              <span><kbd>T</kbd> light / dark</span>
+              <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+              <span><kbd>↵</kbd> open</span>
             </div>
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-// One-click light / dark button with an animated icon swap
-function ModeToggle({ resolved, onToggle }) {
-  const Icon = resolved === "dark" ? FaSun : FaMoon;
-  const next = resolved === "dark" ? "light" : "dark";
-  return (
-    <button className="icon-btn mode-btn" onClick={onToggle} aria-label={`Switch to ${next} mode`} title={`Switch to ${next} mode (T)`}>
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={resolved} className="mode-ico"
-          initial={{ rotate: -90, scale: 0.4, opacity: 0 }} animate={{ rotate: 0, scale: 1, opacity: 1 }} exit={{ rotate: 90, scale: 0.4, opacity: 0 }}
-          transition={{ duration: 0.22, ease: EASE }}
-        >
-          <Icon />
-        </motion.span>
-      </AnimatePresence>
-    </button>
-  );
-}
-
-// Popover with Appearance (System / Light / Dark) and Accent colours
-function ThemeSwitcher({ themeId, setThemeId, mode, setMode }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    const onEsc = (e) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onEsc);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onEsc);
-    };
-  }, [open]);
-
-  return (
-    <div className="theme" ref={ref}>
-      <button className="icon-btn" onClick={() => setOpen((v) => !v)} aria-label="Appearance and accent colours" aria-expanded={open}><FaPalette /></button>
-      <AnimatePresence>
-        {open && (
-          <motion.div className="theme-pop" initial={{ opacity: 0, y: -8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -8, scale: 0.96 }} transition={{ duration: 0.2, ease: EASE }}>
-            <p>APPEARANCE</p>
-            <div className="seg" role="radiogroup" aria-label="Appearance">
-              {MODES.map((m) => {
-                const Icon = m.icon;
-                return (
-                  <button key={m.id} role="radio" aria-checked={mode === m.id} className={`seg-item ${mode === m.id ? "on" : ""}`} onClick={() => setMode(m.id)}>
-                    <Icon /> <span>{m.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-            <p>ACCENT COLOURS</p>
-            {THEMES.map((t) => (
-              <button key={t.id} className={`theme-item ${themeId === t.id ? "on" : ""}`} onClick={() => { setThemeId(t.id); setOpen(false); }}>
-                <i className="sw" style={{ background: `linear-gradient(135deg, ${t.a1}, ${t.a2})` }} />
-                <span>{t.name}</span>
-                {themeId === t.id && <FaCheck />}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
   );
 }
 
@@ -724,18 +536,25 @@ function Mock({ kind, host }) {
   );
 }
 
-// Stacking chapter: the card sticks while the next one slides over it
+// Stacking chapter: the card sticks, shrinks and fades back while the next one slides over it
 function Chapter({ p, i, total, progress }) {
   const from = i / total;
   const to = (i + 1) / total;
   const last = i === total - 1;
-  const scale = useTransform(progress, last ? [0, 1] : [from, to], last ? [1, 1] : [1, 0.93]);
+  const scale = useTransform(progress, last ? [0, 1] : [from, to], last ? [1, 1] : [1, 0.92]);
+  const dim = useTransform(progress, last ? [0, 1] : [from, to], last ? [0, 0] : [0, 0.55]);
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const visualY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+
   return (
-    <div className="chapter" style={{ "--i": i }}>
+    <div className="chapter" style={{ "--i": i }} ref={ref}>
       <motion.article className="chapter-card spot" style={{ scale }} onMouseMove={spot}>
-        <div className="chapter-visual"><Mock kind={p.mock} host={p.host} /><span className="chapter-num">{p.number}</span></div>
+        <div className="chapter-visual">
+          <motion.div className="visual-inner" style={{ y: visualY }}><Mock kind={p.mock} host={p.host} /></motion.div>
+        </div>
         <div className="chapter-copy">
-          <p className="chapter-type"><span>{p.number} / {String(total).padStart(2, "0")}</span>{p.type}</p>
+          <p className="chapter-type">{p.type}</p>
           <h3>{p.title}</h3>
           <p className="chapter-desc">{p.description}</p>
           <ul className="chapter-points">{p.highlights.map((h) => <li key={h}>{h}</li>)}</ul>
@@ -753,6 +572,7 @@ function Chapter({ p, i, total, progress }) {
             <span className="project-link muted-link">{p.note}</span>
           )}
         </div>
+        <motion.i className="chapter-dim" style={{ opacity: dim }} />
       </motion.article>
     </div>
   );
@@ -760,25 +580,26 @@ function Chapter({ p, i, total, progress }) {
 
 /* ----------------------------------- PAGE ----------------------------------- */
 export default function Home() {
+  const [ready, setReady] = useState(false);
   const [menu, setMenu] = useState(false);
   const [palette, setPalette] = useState(false);
   const [active, setActive] = useState("home");
   const [showTop, setShowTop] = useState(false);
   const [hideNav, setHideNav] = useState(false);
   const [imgOk, setImgOk] = useState(true);
-  const [cat, setCat] = useState("All");
   const [toast, setToast] = useState("");
   const lastY = useRef(0);
   const toastTimer = useRef(null);
 
-  const { themeId, setThemeId, mode, setMode, resolved, toggleMode, colorsRef } = useAppearance();
   const role = useScramble(ROLES);
   const time = useMumbaiTime();
 
   const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
-  // Photo moves slightly slower than the page for a parallax feel
-  const photoY = useTransform(scrollY, [0, 700], [0, -50]);
+  // Hero parallax: photo drifts slower than the page, headline drifts up and fades
+  const photoY = useTransform(scrollY, [0, 800], [0, -70]);
+  const heroTextY = useTransform(scrollY, [0, 700], [0, 90]);
+  const heroTextOpacity = useTransform(scrollY, [0, 520], [1, 0.15]);
 
   const stackRef = useRef(null);
   const { scrollYProgress: stackP } = useScroll({ target: stackRef, offset: ["start start", "end end"] });
@@ -802,29 +623,23 @@ export default function Home() {
     }
   }, [showToast]);
 
-  // Lock page scroll while an overlay is open
+  // Lock page scroll while the preloader or an overlay is open
   useEffect(() => {
-    document.body.style.overflow = menu || palette ? "hidden" : "";
+    document.body.style.overflow = !ready || menu || palette ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [menu, palette]);
+  }, [ready, menu, palette]);
 
-  // Keyboard shortcuts: Ctrl/Cmd + K opens the command palette, T toggles light / dark
+  // Keyboard shortcut: Ctrl/Cmd + K opens the command palette
   useEffect(() => {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setPalette((v) => !v);
-        return;
-      }
-      const tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : "";
-      const typing = tag === "input" || tag === "textarea" || (e.target && e.target.isContentEditable);
-      if (!typing && !e.metaKey && !e.ctrlKey && !e.altKey && e.key.toLowerCase() === "t") {
-        toggleMode();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [toggleMode]);
+  }, []);
 
   // Back-to-top visibility and navbar hide on scroll down / show on scroll up
   useEffect(() => {
@@ -873,24 +688,23 @@ export default function Home() {
     { id: "gh", group: "Links", label: "Open GitHub", icon: FaGithub, run: () => openUrl(GITHUB_LINK) },
     { id: "rwitc", group: "Links", label: "Visit rwitc.com", icon: FaArrowUpRightFromSquare, run: () => openUrl(RWITC_URL) },
     { id: "intucate-web", group: "Links", label: "Open Intucate web app", icon: FaArrowUpRightFromSquare, run: () => openUrl(INTUCATE_WEB) },
-    { id: "intucate-app", group: "Links", label: "Intucate on Google Play", icon: FaGooglePlay, run: () => openUrl(INTUCATE_APP) },
-    ...MODES.map((m) => ({ id: `mode-${m.id}`, group: "Appearance", label: m.id === "system" ? "Use system theme" : `${m.name} mode`, icon: m.icon, run: () => setMode(m.id) })),
-    ...THEMES.map((t) => ({ id: `theme-${t.id}`, group: "Theme", label: `${t.name} colours`, icon: FaPalette, run: () => setThemeId(t.id) }))
+    { id: "intucate-app", group: "Links", label: "Intucate on Google Play", icon: FaGooglePlay, run: () => openUrl(INTUCATE_APP) }
   ];
-
-  const shown = cat === "All" ? skills : skills.filter((s) => s.cat === cat);
 
   return (
     <MotionConfig reducedMotion="user">
       <main className="portfolio" id="home">
+        <AnimatePresence>{!ready && <Preloader key="preloader" onDone={setReady} />}</AnimatePresence>
+
         <a className="skip" href="#about">Skip to content</a>
-        <Background colorsRef={colorsRef} />
+        <Background />
         <CustomCursor />
+        <motion.i className="top-progress" style={{ scaleX: progress }} />
 
         {/* NAVBAR */}
-        <motion.header className="nav" initial={{ y: -80, opacity: 0 }} animate={{ y: hideNav && !menu ? -110 : 0, opacity: 1 }} transition={{ duration: 0.45, ease: EASE }}>
+        <motion.header className="nav" initial={{ y: -90, opacity: 0 }} animate={ready ? { y: hideNav && !menu ? -110 : 0, opacity: 1 } : { y: -90, opacity: 0 }} transition={{ duration: 0.6, ease: EASE, delay: ready ? 0.9 : 0 }}>
           <div className="nav-inner">
-            <a className="logo" href="#home">rohan<span>®</span></a>
+            <a className="logo" href="#home">rohan<span>.</span></a>
             <nav className="nav-links">
               {NAV.map((x) => {
                 const id = x.toLowerCase();
@@ -904,36 +718,23 @@ export default function Home() {
             </nav>
             <div className="nav-right">
               <button className="kbd-btn" onClick={() => setPalette(true)} aria-label="Open command palette"><FaMagnifyingGlass /> Search <kbd>Ctrl K</kbd></button>
-              <ModeToggle resolved={resolved} onToggle={toggleMode} />
-              <ThemeSwitcher themeId={themeId} setThemeId={setThemeId} mode={mode} setMode={setMode} />
               <a className="nav-cta" href="#contact" data-cursor="Talk">Let&apos;s talk <FaArrowRight /></a>
               <button className="burger" onClick={() => setMenu(true)} aria-label="Open menu"><FaBars /></button>
             </div>
-            <motion.i className="nav-progress" style={{ scaleX: progress }} />
           </div>
         </motion.header>
 
         <AnimatePresence>
           {menu && (
-            <motion.div className="drawer" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}>
+            <motion.div className="drawer" initial={{ clipPath: "circle(0% at 100% 0%)" }} animate={{ clipPath: "circle(150% at 100% 0%)" }} exit={{ clipPath: "circle(0% at 100% 0%)" }} transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}>
               <button className="drawer-close" onClick={() => setMenu(false)} aria-label="Close menu"><FaXmark /></button>
               <nav className="drawer-links">
                 {NAV.map((x, i) => (
-                  <motion.a key={x} href={`#${x.toLowerCase()}`} onClick={() => setMenu(false)} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.07, duration: 0.5, ease: EASE }}>
-                    <small>0{i + 1}</small>{x}
+                  <motion.a key={x} href={`#${x.toLowerCase()}`} onClick={() => setMenu(false)} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 + i * 0.07, duration: 0.6, ease: EASE }}>
+                    {x}
                   </motion.a>
                 ))}
               </nav>
-              <div className="drawer-mode seg" role="radiogroup" aria-label="Appearance">
-                {MODES.map((m) => {
-                  const Icon = m.icon;
-                  return (
-                    <button key={m.id} role="radio" aria-checked={mode === m.id} className={`seg-item ${mode === m.id ? "on" : ""}`} onClick={() => setMode(m.id)}>
-                      <Icon /> <span>{m.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
               <p className="drawer-foot">{EMAIL}</p>
             </motion.div>
           )}
@@ -941,36 +742,35 @@ export default function Home() {
 
         {/* HERO */}
         <section className="hero">
-          <motion.div className="hero-status" variants={fadeUp} initial="hidden" animate="visible" custom={2}>
-            <span><i className="dot" /> AVAILABLE FOR OPPORTUNITIES</span>
-            <span>MUMBAI, INDIA <FaLocationDot /></span>
+          <motion.div className="hero-status" variants={fadeUp} initial="hidden" animate={ready ? "visible" : "hidden"} custom={8}>
+            <span><i className="dot" /> Available for opportunities</span>
+            <span>Mumbai, India <FaLocationDot /></span>
           </motion.div>
 
           <div className="hero-layout">
-            <motion.div className="hero-copy" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } } }}>
-              <motion.p variants={fadeUp} className="eyebrow">HELLO, I&apos;M ROHAN SINGH</motion.p>
+            <motion.div className="hero-copy" style={{ y: heroTextY, opacity: heroTextOpacity }}>
+              <motion.p className="eyebrow" variants={fadeUp} initial="hidden" animate={ready ? "visible" : "hidden"} custom={9}>Hello, I&apos;m Rohan Singh</motion.p>
               <h1>
-                <Words className="h-line" text="I make the" delay={0.2} />
-                <Words className="h-line" text="digital world" delay={0.4} />
-                <Words className="h-line accent" text="work better." delay={0.65} />
+                <Lines play={ready} text="I make the" delay={0.55} />
+                <Lines play={ready} text="digital world" delay={0.75} />
+                <Lines play={ready} text="work better." delay={0.95} className="dim" />
               </h1>
-              <motion.p variants={fadeUp} className="role-line"><span className="prompt">›</span><span className="role">{role}</span><span className="caret" /></motion.p>
-              <motion.p variants={fadeUp} className="intro">A full stack developer at ENATS LLP building responsive web experiences, mobile features and dependable backend solutions with Next.js, React, PHP and MySQL.</motion.p>
-              <motion.div variants={fadeUp}><ResumeButtons /></motion.div>
-              <motion.div variants={fadeUp} className="socials">
+              <motion.p className="role-line" variants={fadeUp} initial="hidden" animate={ready ? "visible" : "hidden"} custom={13}><span className="prompt">›</span><span className="role">{role}</span><span className="caret" /></motion.p>
+              <motion.p className="intro" variants={fadeUp} initial="hidden" animate={ready ? "visible" : "hidden"} custom={14}>A full stack developer at ENATS LLP building responsive web experiences, mobile features and dependable backend solutions with Next.js, React, PHP and MySQL.</motion.p>
+              <motion.div variants={fadeUp} initial="hidden" animate={ready ? "visible" : "hidden"} custom={15} className="hero-cta"><ResumeButtons /></motion.div>
+              <motion.div variants={fadeUp} initial="hidden" animate={ready ? "visible" : "hidden"} custom={16} className="socials">
                 {channels.map((c) => {
                   const Icon = c.icon;
                   return (
                     <a key={c.key} className={`social ${c.key}`} href={c.href} onClick={c.onClick} aria-label={c.name} {...(c.external ? { target: "_blank", rel: "noreferrer" } : {})}><Icon /></a>
                   );
                 })}
-                <span className="socials-hint">Press <kbd>Ctrl K</kbd> to explore · <kbd>T</kbd> for light / dark</span>
+                <span className="socials-hint">Press <kbd>Ctrl K</kbd> to explore</span>
               </motion.div>
             </motion.div>
 
-            <motion.div className="hero-art" initial={{ opacity: 0, y: 40, scale: 0.96, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }} transition={{ duration: 1, delay: 0.5, ease: EASE }}>
+            <motion.div className="hero-art" initial={{ clipPath: "inset(100% 0 0 0 round 28px)" }} animate={ready ? { clipPath: "inset(0% 0 0 0 round 28px)" } : { clipPath: "inset(100% 0 0 0 round 28px)" }} transition={{ duration: 1.3, delay: 0.5, ease: [0.76, 0, 0.24, 1] }}>
               <motion.div className="photo-wrap" style={{ y: photoY }}>
-                <i className="photo-glow" />
                 <Tilt className="photo-tilt">
                   <div className="photo-card">
                     <div className="photo-inner">
@@ -983,37 +783,33 @@ export default function Home() {
                       <div className="photo-shade" />
                       <div className="photo-caption">
                         <h3>Rohan Singh</h3>
-                        <p>Full Stack Developer · ENATS LLP</p>
+                        <p>Full Stack Developer at ENATS LLP</p>
                       </div>
                     </div>
                   </div>
                 </Tilt>
-                <motion.div className="fchip c1" animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}><SiNextdotjs /> Next.js</motion.div>
-                <motion.div className="fchip c2" animate={{ y: [0, 10, 0] }} transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}><SiPhp /> PHP · MySQL</motion.div>
-                <motion.div className="fchip c3" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}><FaLocationDot /> Mumbai {time && `· ${time}`}</motion.div>
-                <motion.div className="fchip c4" animate={{ y: [0, 8, 0] }} transition={{ duration: 4.3, repeat: Infinity, ease: "easeInOut" }}><i className="dot" /> Open to work</motion.div>
               </motion.div>
             </motion.div>
+            <motion.div className="fchip c1" initial={{ opacity: 0, scale: 0.7 }} animate={ready ? { opacity: 1, scale: 1, y: [0, -10, 0] } : {}} transition={{ opacity: { delay: 1.6, duration: 0.5 }, scale: { delay: 1.6, duration: 0.5 }, y: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}><SiNextdotjs /> Next.js</motion.div>
+            <motion.div className="fchip c2" initial={{ opacity: 0, scale: 0.7 }} animate={ready ? { opacity: 1, scale: 1, y: [0, 10, 0] } : {}} transition={{ opacity: { delay: 1.8, duration: 0.5 }, scale: { delay: 1.8, duration: 0.5 }, y: { duration: 4.6, repeat: Infinity, ease: "easeInOut" } }}><SiPhp /> PHP and MySQL</motion.div>
+            <motion.div className="fchip c3" initial={{ opacity: 0, scale: 0.7 }} animate={ready ? { opacity: 1, scale: 1, y: [0, -8, 0] } : {}} transition={{ opacity: { delay: 2, duration: 0.5 }, scale: { delay: 2, duration: 0.5 }, y: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}><FaLocationDot /> Mumbai {time && `· ${time}`}</motion.div>
           </div>
 
           <div className="hero-bottom">
-            <span>01 / INTRODUCTION</span>
-            <span className="scroll-hint"><i className="wheel"><b /></i> SCROLL</span>
+            <span>Scroll to explore</span>
+            <span className="scroll-hint"><i className="wheel"><b /></i></span>
           </div>
         </section>
 
-        {/* ABOUT — bento grid */}
-        <section className="section about" id="about">
-          <Label index="01">ABOUT ME</Label>
-          <div className="bento">
-            <motion.div className="tile t-bio spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-              <Title a="Curiosity first." b="Solutions always." />
-              <p>I&apos;m a Full Stack Developer at <strong>ENATS LLP</strong>, working across web and mobile features, PHP backend services, APIs, databases and deployment-related troubleshooting.</p>
-              <p>I enjoy taking a real requirement, understanding the problem and turning it into a responsive, practical and maintainable solution.</p>
-              <a className="text-link" href="#journey">Explore my journey ↗</a>
-            </motion.div>
+        <div className="ticker-band"><Marquee items={skills.map((s) => s.name)} /></div>
 
-            <motion.div className="tile t-stats spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={1}>
+        {/* ABOUT */}
+        <section className="section about" id="about">
+          <SectionLabel>About me</SectionLabel>
+          <ScrollText text={ABOUT_TEXT} className="about-statement" />
+
+          <div className="bento">
+            <motion.div className="tile t-stats spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
               {stats.map((s) => (
                 <div className="stat" key={s.label}>
                   <strong><CountUp to={s.to} format={(n) => `${String(n).padStart(2, "0")}${s.suffix}`} /></strong>
@@ -1022,32 +818,32 @@ export default function Home() {
               ))}
             </motion.div>
 
-            <motion.div className="tile t-now spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={2}>
-              <p className="tile-tag"><i className="dot" /> CURRENTLY · 2025 — PRESENT</p>
+            <motion.div className="tile t-now spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={1}>
+              <p className="tile-tag"><i className="dot" /> Currently, 2025 to present</p>
               <h3>Full Stack Developer</h3>
               <p className="tile-sub">ENATS LLP · Mumbai, India</p>
               <div className="chips">{["Web", "Mobile", "APIs", "Admin modules"].map((c) => <span key={c}>{c}</span>)}</div>
             </motion.div>
 
-            <motion.div className="tile t-time spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={3}>
+            <motion.div className="tile t-time spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={2}>
               <div className="radar"><i /><i /><i /><FaLocationDot /></div>
-              <p className="tile-tag">BASED IN</p>
+              <p className="tile-tag">Based in</p>
               <h3>Mumbai, India</h3>
               <p className="clock">{time || "--:--"}</p>
               <p className="tile-sub">IST · UTC+5:30</p>
             </motion.div>
 
-            <motion.a className="tile t-git spot" href={GITHUB_LINK} target="_blank" rel="noreferrer" data-cursor="Open" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={4}>
+            <motion.a className="tile t-git spot" href={GITHUB_LINK} target="_blank" rel="noreferrer" data-cursor="Open" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={3}>
               <FaGithub className="tile-big" />
-              <p className="tile-tag">OPEN SOURCE MIND</p>
+              <p className="tile-tag">Code</p>
               <h3>@{GITHUB_USERNAME}</h3>
               <p className="tile-sub">See my code on GitHub</p>
               <FaArrowUpRightFromSquare className="tile-arrow" />
             </motion.a>
 
-            <motion.div className="tile t-edu spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={5}>
+            <motion.div className="tile t-edu spot" onMouseMove={spot} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} custom={4}>
               <FaGraduationCap className="tile-big" />
-              <p className="tile-tag">EDUCATION</p>
+              <p className="tile-tag">Education</p>
               <h3>B.Sc. Information Technology</h3>
               <p className="tile-sub">2024 · 6.95 / 10</p>
               <p className="tile-sub">SDAC InfoTech training · Grade A</p>
@@ -1057,44 +853,34 @@ export default function Home() {
 
         {/* STACK */}
         <section className="section stack-section" id="stack">
-          <Label index="02">MY TOOLKIT</Label>
+          <SectionLabel>Toolkit</SectionLabel>
           <div className="split">
             <Title a="Tools for" b="building things." />
             <motion.p className="section-summary" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>The languages, frameworks and platforms I use to build interfaces, connect services and work with data.</motion.p>
           </div>
 
-          <div className="tabs" role="tablist">
-            {CATS.map((c) => (
-              <button key={c} role="tab" aria-selected={cat === c} className={`tab ${cat === c ? "on" : ""}`} onClick={() => setCat(c)}>
-                {cat === c && <motion.span layoutId="tab-pill" className="tab-pill" transition={{ type: "spring", stiffness: 400, damping: 32 }} />}
-                <span>{c}</span>
-              </button>
+          <div className="stack-list">
+            {CATS.map((c, ci) => (
+              <motion.div className="stack-row" key={c} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, delay: ci * 0.05, ease: EASE }}>
+                <h3 className="stack-cat">{c}</h3>
+                <div className="stack-items">
+                  {skills.filter((s) => s.cat === c).map((s) => {
+                    const Icon = s.icon;
+                    return (
+                      <motion.span key={s.name} className="stack-pill" whileHover={{ y: -4 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>
+                        <Icon /> {s.name}
+                      </motion.span>
+                    );
+                  })}
+                </div>
+              </motion.div>
             ))}
           </div>
-
-          <motion.div className="skills-grid" layout>
-            <AnimatePresence mode="popLayout">
-              {shown.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <motion.div
-                    key={s.name} className="skill-card spot" layout onMouseMove={spot}
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.4, delay: i * 0.03, ease: EASE }} whileHover={{ y: -6 }}
-                  >
-                    <div className="skill-top"><span className="skill-cat">{s.cat.toUpperCase()}</span><FaArrowUpRightFromSquare className="skill-arrow" /></div>
-                    <Icon className="skill-icon" style={{ "--i": i }} />
-                    <span className="skill-name">{s.name}</span>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </motion.div>
         </section>
 
-        {/* WORK — stacking chapters */}
+        {/* WORK */}
         <section className="section work-section" id="work">
-          <Label index="03">SELECTED WORK</Label>
+          <SectionLabel>Selected work</SectionLabel>
           <div className="split">
             <Title a="Real work." b="Practical impact." />
             <motion.p className="section-summary" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>Personal and professional projects, with the technologies and purpose behind each.</motion.p>
@@ -1106,12 +892,12 @@ export default function Home() {
 
         {/* JOURNEY */}
         <section className="section journey-section" id="journey">
-          <Label index="04">EXPERIENCE &amp; EDUCATION</Label>
+          <SectionLabel>Experience and education</SectionLabel>
           <Title a="Every step" b="builds the next." />
           <div className="timeline" ref={timelineRef}>
             <div className="timeline-line"><motion.div className="timeline-fill" style={{ scaleY: tlScale }} /></div>
             {experience.map((e) => (
-              <motion.div className="timeline-row" key={e.title} initial={{ opacity: 0, x: -36, filter: "blur(6px)" }} whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7, ease: EASE }}>
+              <motion.div className="timeline-row" key={e.title} initial={{ opacity: 0, x: -36 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: EASE }}>
                 <span className="timeline-dot" />
                 <span className="timeline-date">{e.date}</span>
                 <div>
@@ -1128,22 +914,22 @@ export default function Home() {
         {/* CONTACT */}
         <section className="section contact" id="contact">
           <div className="contact-panel">
-            <i className="cp-orb o1" /><i className="cp-orb o2" />
+            <i className="cp-orb o1" />
 
             <div className="contact-left">
               <motion.p className="contact-tag" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-                <i className="dot" /> OPEN TO NEW OPPORTUNITIES
+                <i className="dot" /> Open to new opportunities
               </motion.p>
               <Title a="Got an idea?" b="Let's talk." className="title-lg" />
               <motion.p className="contact-text" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>
                 Pick whichever is easiest for you. WhatsApp and Instagram open a direct chat with me, and Gmail opens a ready-to-send mail.
               </motion.p>
               <motion.div className="contact-actions" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3}>
-                <button className="btn-primary shine" onClick={copyEmail}><FaCopy /> Copy email</button>
-                <span className="contact-loc"><FaLocationDot /> MUMBAI · {time || "--:--"}</span>
+                <button className="btn-primary" onClick={copyEmail}><span>Copy email</span><FaCopy /></button>
+                <span className="contact-loc"><FaLocationDot /> Mumbai · {time || "--:--"}</span>
               </motion.div>
               <motion.div className="contact-resume" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={4}>
-                <p>WANT THE FULL STORY?</p>
+                <p>Want the full story?</p>
                 <ResumeButtons />
               </motion.div>
             </div>
@@ -1154,7 +940,7 @@ export default function Home() {
                 return (
                   <motion.a
                     key={c.key}
-                    className={`row ${c.key}`}
+                    className="row"
                     href={c.href}
                     onClick={c.onClick}
                     data-cursor="Open"
@@ -1180,18 +966,18 @@ export default function Home() {
         </section>
 
         <footer className="footer">
-          <a className="logo" href="#home">rohan<span>®</span></a>
-          <span>DESIGNED &amp; BUILT BY ROHAN SINGH</span>
-          <span>© 2026</span>
+          <h2 className="foot-big" aria-label="Rohan Singh"><Lines inView text="Rohan Singh" /></h2>
+          <div className="foot-row">
+            <a className="logo" href="#home">rohan<span>.</span></a>
+            <span>Designed and built by Rohan Singh</span>
+            <span>© 2026</span>
+          </div>
         </footer>
 
+        {/* Plain back-to-top button (no progress ring) */}
         <AnimatePresence>
           {showTop && (
             <motion.a href="#home" className="to-top" aria-label="Back to top" initial={{ opacity: 0, scale: 0.5, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.5, y: 20 }} whileHover={{ y: -4 }}>
-              <svg viewBox="0 0 48 48" className="ring" aria-hidden="true">
-                <circle cx="24" cy="24" r="22" className="ring-bg" />
-                <motion.circle cx="24" cy="24" r="22" className="ring-fg" style={{ pathLength: progress }} />
-              </svg>
               <FaArrowUp />
             </motion.a>
           )}

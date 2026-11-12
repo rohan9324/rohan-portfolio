@@ -5,9 +5,9 @@ import {
   AnimatePresence, motion, MotionConfig, useInView, useMotionValue, useScroll, useSpring, useTransform
 } from "framer-motion";
 import {
-  FaArrowRight, FaArrowUp, FaArrowUpRightFromSquare, FaBars, FaCheck, FaCloud, FaCode, FaCopy,
-  FaDownload, FaEye, FaGithub, FaGraduationCap, FaHouse, FaInstagram, FaLocationDot, FaMagnifyingGlass,
-  FaMobileScreen, FaPalette, FaReact, FaWhatsapp, FaXmark
+  FaArrowRight, FaArrowUp, FaArrowUpRightFromSquare, FaBars, FaCheck, FaCircleHalfStroke, FaCloud, FaCode, FaCopy,
+  FaDownload, FaEye, FaGithub, FaGooglePlay, FaGraduationCap, FaHouse, FaInstagram, FaLocationDot, FaMagnifyingGlass,
+  FaMobileScreen, FaMoon, FaPalette, FaReact, FaSun, FaWhatsapp, FaXmark
 } from "react-icons/fa6";
 import { SiGmail, SiJavascript, SiLaravel, SiMongodb, SiMysql, SiNextdotjs, SiNodedotjs, SiPhp } from "react-icons/si";
 import "./Home.css";
@@ -25,6 +25,11 @@ const WHATSAPP_DISPLAY = "+91 93245 19782";
 const INSTAGRAM_USERNAME = "rohansingh._19";
 const GITHUB_USERNAME = "rohan9324"; // change if your GitHub username is different
 
+// Project links
+const RWITC_URL = "https://rwitc.com/";
+const INTUCATE_WEB = "https://register.intucate.com/";
+const INTUCATE_APP = "https://play.google.com/store/apps/details?id=com.tech.intucate";
+
 const WA_MESSAGE = "Hi Rohan, I saw your portfolio and would like to connect.";
 const MAIL_SUBJECT = "Hello Rohan";
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
@@ -37,13 +42,19 @@ const ROLES = ["Full Stack Developer", "Next.js Builder", "PHP & MySQL Engineer"
 const NAV = ["About", "Stack", "Work", "Journey", "Contact"];
 const EASE = [0.22, 0.8, 0.2, 1];
 
-// Accent colour themes (the visitor can switch them from the palette button)
+// Accent colour themes. a1-a3 are used in dark mode, l1-l3 are darker variants used in light mode
+// so that text stays readable on a light background.
 const THEMES = [
-  { id: "aurora", name: "Aurora", a1: "#7c8cff", a2: "#2ee6c0", a3: "#f472b6" },
-  { id: "ocean", name: "Ocean", a1: "#4f8cff", a2: "#22d3ee", a3: "#a78bfa" },
-  { id: "ember", name: "Ember", a1: "#ff7a45", a2: "#ffc857", a3: "#ff4d8d" },
-  { id: "violet", name: "Violet", a1: "#a78bfa", a2: "#f472b6", a3: "#60a5fa" },
-  { id: "lime", name: "Lime", a1: "#b6f23d", a2: "#34d399", a3: "#22d3ee" }
+  { id: "aurora", name: "Aurora", a1: "#7c8cff", a2: "#2ee6c0", a3: "#f472b6", l1: "#4f5bd5", l2: "#0a9d83", l3: "#d6307f" },
+  { id: "ocean", name: "Ocean", a1: "#4f8cff", a2: "#22d3ee", a3: "#a78bfa", l1: "#2563eb", l2: "#0e8fb0", l3: "#7c4dde" },
+  { id: "ember", name: "Ember", a1: "#ff7a45", a2: "#ffc857", a3: "#ff4d8d", l1: "#e0501c", l2: "#b9770e", l3: "#d61f6b" },
+  { id: "violet", name: "Violet", a1: "#a78bfa", a2: "#f472b6", a3: "#60a5fa", l1: "#7c4dde", l2: "#c026a3", l3: "#2563eb" },
+  { id: "lime", name: "Lime", a1: "#b6f23d", a2: "#34d399", a3: "#22d3ee", l1: "#5b8a00", l2: "#0f9d6b", l3: "#0e8fb0" }
+];
+const MODES = [
+  { id: "system", name: "System", icon: FaCircleHalfStroke },
+  { id: "light", name: "Light", icon: FaSun },
+  { id: "dark", name: "Dark", icon: FaMoon }
 ];
 const hexToRgb = (h) => {
   const n = parseInt(h.slice(1), 16);
@@ -67,29 +78,34 @@ const skills = [
 ];
 const CATS = ["All", "Frontend", "Backend", "Database", "Cloud & Tools"];
 
+// Order of this array is the order on the page: User Management, RWITC, Intucate.
+// `links` can hold any number of buttons. Leave it empty for projects without a public link.
 const projects = [
   {
-    number: "01", title: "RWITC Website & Admin Platform", type: "PROFESSIONAL EXPERIENCE", mock: "site",
-    description: "Contributed to website and admin functionality, Next.js pages, PHP modules, API integration, access control, article management, media delivery and performance troubleshooting.",
-    highlights: ["Next.js pages", "PHP modules", "API integration", "Access control", "Article management", "Media delivery", "Performance troubleshooting"],
-    stack: ["Next.js", "PHP", "MySQL", "AWS S3", "CloudFront"],
-    url: "https://rwitc.com/", label: "Visit live website"
-  },
-  {
-    number: "02", title: "CineVault", type: "PERSONAL PROJECT", mock: "movies",
-    description: "A MERN movie-management app with dynamic movie creation and listing, REST APIs, MongoDB storage, reusable React components and client-side validation.",
-    highlights: ["Dynamic movie creation", "Movie listing", "REST APIs", "MongoDB storage", "Reusable React components", "Client-side validation"],
-    stack: ["React", "Node.js", "Express", "MongoDB"],
-    url: "", label: "Personal project"
-  },
-  {
-    number: "03", title: "User Profile & Task Manager", type: "PERSONAL PROJECT", mock: "tasks",
-    description: "A responsive PHP application with registration and login, session handling, profile photo uploads, user-detail updates and task CRUD operations.",
+    title: "User Profile & Task Manager", type: "PERSONAL PROJECT", mock: "tasks", host: "localhost:3000",
+    description: "A responsive PHP application for user management: registration and login, session handling, profile photo uploads, user-detail updates and task CRUD operations.",
     highlights: ["Registration & login", "Session handling", "Profile photo uploads", "User-detail updates", "Task CRUD"],
     stack: ["PHP", "MySQL", "JavaScript", "Bootstrap"],
-    url: "", label: "Personal project"
+    links: [], note: "Personal project"
+  },
+  {
+    title: "RWITC Website & Admin Platform", type: "PROFESSIONAL EXPERIENCE", mock: "site", host: "rwitc.com",
+    description: "Worked on the full stack of the Royal Western India Turf Club platform: Next.js pages, PHP admin modules, MySQL-backed APIs, access control, article management, media delivery from S3 and performance troubleshooting.",
+    highlights: ["Next.js pages", "PHP admin modules", "API integration", "Access control", "Article management", "Media delivery", "Performance troubleshooting"],
+    stack: ["Next.js", "PHP", "MySQL", "AWS S3", "CloudFront"],
+    links: [{ label: "Visit live website", url: RWITC_URL, icon: FaArrowUpRightFromSquare }]
+  },
+  {
+    title: "Intucate — CA Exam Prep", type: "PROFESSIONAL EXPERIENCE", mock: "learn", host: "register.intucate.com",
+    description: "Frontend work on Intucate, a CA exam-preparation platform, across its registration web app and its Android app: responsive screens, referral-based sign-up flow and clean, fast interfaces for students.",
+    highlights: ["Responsive frontend", "Registration & referral sign-up", "Android app screens", "Reusable components", "API integration"],
+    stack: ["React", "JavaScript", "REST APIs", "Android"],
+    links: [
+      { label: "Open web app", url: INTUCATE_WEB, icon: FaArrowUpRightFromSquare },
+      { label: "Get it on Google Play", url: INTUCATE_APP, icon: FaGooglePlay }
+    ]
   }
-];
+].map((p, i) => ({ ...p, number: String(i + 1).padStart(2, "0") }));
 
 const experience = [
   { date: "2025 — PRESENT", title: "Full Stack Developer", place: "ENATS LLP · Mumbai, India", text: "Building and maintaining web and mobile features, integrating APIs, developing admin modules, managing database-driven functionality and troubleshooting production issues." },
@@ -100,8 +116,8 @@ const experience = [
 
 const stats = [
   { to: 1, suffix: "+", label: "YEAR OF EXPERIENCE" },
-  { to: 12, suffix: "", label: "CORE TECHNOLOGIES" },
-  { to: 3, suffix: "", label: "PROJECTS SHOWCASED" }
+  { to: skills.length, suffix: "", label: "CORE TECHNOLOGIES" },
+  { to: projects.length, suffix: "", label: "PROJECTS SHOWCASED" }
 ];
 
 // Gmail opens the web compose window on desktop, and the mail app on mobile
@@ -225,30 +241,72 @@ function ResumeButtons() {
 }
 
 /* ------------------------------------ HOOKS ------------------------------------ */
-// Theme state: applies the accent colours as CSS variables and remembers the choice
-function useTheme() {
-  const [id, setId] = useState(THEMES[0].id);
+// Appearance state: accent theme + light/dark/system mode.
+// - Applies colours as CSS variables on <html> and sets data-theme="light|dark"
+// - Remembers both choices in localStorage
+// - In "system" mode it follows the device setting live
+function useAppearance() {
+  const [themeId, setThemeIdState] = useState(THEMES[0].id);
+  const [mode, setModeState] = useState("system");
+  const [systemDark, setSystemDark] = useState(true);
   const colorsRef = useRef({ a1: hexToRgb(THEMES[0].a1), a2: hexToRgb(THEMES[0].a2) });
+  const firstRun = useRef(true);
+  const animTimer = useRef(null);
 
+  const resolved = mode === "system" ? (systemDark ? "dark" : "light") : mode;
+
+  // Read saved choices and watch the device colour scheme
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("rs_theme");
-      if (saved && THEMES.some((t) => t.id === saved)) setId(saved);
+      const savedTheme = localStorage.getItem("rs_theme");
+      if (savedTheme && THEMES.some((t) => t.id === savedTheme)) setThemeIdState(savedTheme);
+      const savedMode = localStorage.getItem("rs_mode");
+      if (savedMode && MODES.some((m) => m.id === savedMode)) setModeState(savedMode);
     } catch {}
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setSystemDark(mq.matches);
+    const onChange = (e) => setSystemDark(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  // Apply the colours to the page
   useEffect(() => {
-    const t = THEMES.find((x) => x.id === id) || THEMES[0];
-    const root = document.documentElement.style;
-    ["a1", "a2", "a3"].forEach((k) => {
-      root.setProperty(`--${k}`, t[k]);
-      root.setProperty(`--${k}-rgb`, hexToRgb(t[k]));
-    });
-    colorsRef.current = { a1: hexToRgb(t.a1), a2: hexToRgb(t.a2) };
-    try { localStorage.setItem("rs_theme", id); } catch {}
-  }, [id]);
+    const t = THEMES.find((x) => x.id === themeId) || THEMES[0];
+    const el = document.documentElement;
+    const light = resolved === "light";
 
-  return { id, setId, colorsRef };
+    // Short colour cross-fade, but not on the very first paint
+    if (!firstRun.current) {
+      el.classList.add("theme-anim");
+      clearTimeout(animTimer.current);
+      animTimer.current = setTimeout(() => el.classList.remove("theme-anim"), 450);
+    }
+    firstRun.current = false;
+
+    const picked = light ? { a1: t.l1, a2: t.l2, a3: t.l3 } : { a1: t.a1, a2: t.a2, a3: t.a3 };
+    ["a1", "a2", "a3"].forEach((k) => {
+      el.style.setProperty(`--${k}`, picked[k]);
+      el.style.setProperty(`--${k}-rgb`, hexToRgb(picked[k]));
+    });
+    colorsRef.current = { a1: hexToRgb(picked.a1), a2: hexToRgb(picked.a2) };
+    el.dataset.theme = resolved;
+    el.style.colorScheme = resolved;
+  }, [themeId, resolved]);
+
+  useEffect(() => () => clearTimeout(animTimer.current), []);
+
+  const setThemeId = useCallback((id) => {
+    setThemeIdState(id);
+    try { localStorage.setItem("rs_theme", id); } catch {}
+  }, []);
+  const setMode = useCallback((m) => {
+    setModeState(m);
+    try { localStorage.setItem("rs_mode", m); } catch {}
+  }, []);
+  const toggleMode = useCallback(() => setMode(resolved === "dark" ? "light" : "dark"), [resolved, setMode]);
+
+  return { themeId, setThemeId, mode, setMode, resolved, toggleMode, colorsRef };
 }
 
 // Text that "decodes" from random glyphs into the next word
@@ -560,6 +618,7 @@ function CommandPalette({ open, onClose, actions }) {
             <div className="cmd-foot">
               <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
               <span><kbd>↵</kbd> select</span>
+              <span><kbd>T</kbd> light / dark</span>
             </div>
           </motion.div>
         </motion.div>
@@ -568,23 +627,59 @@ function CommandPalette({ open, onClose, actions }) {
   );
 }
 
-function ThemeSwitcher({ themeId, setThemeId }) {
+// One-click light / dark button with an animated icon swap
+function ModeToggle({ resolved, onToggle }) {
+  const Icon = resolved === "dark" ? FaSun : FaMoon;
+  const next = resolved === "dark" ? "light" : "dark";
+  return (
+    <button className="icon-btn mode-btn" onClick={onToggle} aria-label={`Switch to ${next} mode`} title={`Switch to ${next} mode (T)`}>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={resolved} className="mode-ico"
+          initial={{ rotate: -90, scale: 0.4, opacity: 0 }} animate={{ rotate: 0, scale: 1, opacity: 1 }} exit={{ rotate: 90, scale: 0.4, opacity: 0 }}
+          transition={{ duration: 0.22, ease: EASE }}
+        >
+          <Icon />
+        </motion.span>
+      </AnimatePresence>
+    </button>
+  );
+}
+
+// Popover with Appearance (System / Light / Dark) and Accent colours
+function ThemeSwitcher({ themeId, setThemeId, mode, setMode }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
     if (!open) return;
     const onDown = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const onEsc = (e) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onEsc);
+    };
   }, [open]);
 
   return (
     <div className="theme" ref={ref}>
-      <button className="icon-btn" onClick={() => setOpen((v) => !v)} aria-label="Change accent colours" aria-expanded={open}><FaPalette /></button>
+      <button className="icon-btn" onClick={() => setOpen((v) => !v)} aria-label="Appearance and accent colours" aria-expanded={open}><FaPalette /></button>
       <AnimatePresence>
         {open && (
           <motion.div className="theme-pop" initial={{ opacity: 0, y: -8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -8, scale: 0.96 }} transition={{ duration: 0.2, ease: EASE }}>
+            <p>APPEARANCE</p>
+            <div className="seg" role="radiogroup" aria-label="Appearance">
+              {MODES.map((m) => {
+                const Icon = m.icon;
+                return (
+                  <button key={m.id} role="radio" aria-checked={mode === m.id} className={`seg-item ${mode === m.id ? "on" : ""}`} onClick={() => setMode(m.id)}>
+                    <Icon /> <span>{m.name}</span>
+                  </button>
+                );
+              })}
+            </div>
             <p>ACCENT COLOURS</p>
             {THEMES.map((t) => (
               <button key={t.id} className={`theme-item ${themeId === t.id ? "on" : ""}`} onClick={() => { setThemeId(t.id); setOpen(false); }}>
@@ -602,10 +697,10 @@ function ThemeSwitcher({ themeId, setThemeId }) {
 
 /* ------------------------------- PROJECT VISUALS ------------------------------ */
 // Abstract CSS "screens" so the cards do not need screenshots
-function Mock({ kind }) {
+function Mock({ kind, host }) {
   return (
     <div className={`mock ${kind}`}>
-      <div className="mock-bar"><i /><i /><i /><span>{kind === "site" ? "rwitc.com" : "localhost:3000"}</span></div>
+      <div className="mock-bar"><i /><i /><i /><span>{host}</span></div>
       <div className="mock-body">
         {kind === "site" && (
           <>
@@ -614,8 +709,12 @@ function Mock({ kind }) {
             <div className="m-lines"><b /><b /><b /></div>
           </>
         )}
-        {kind === "movies" && (
-          <div className="m-posters">{[0, 1, 2, 3, 4, 5].map((n) => <i key={n} style={{ "--n": n }} />)}</div>
+        {kind === "learn" && (
+          <>
+            <div className="m-top"><b /><span className="m-coin" /></div>
+            <div className="m-hero"><b /><b /><em /></div>
+            <div className="m-bars">{[42, 68, 54, 86, 62, 92].map((h, n) => <i key={n} style={{ "--h": `${h}%`, "--n": n }} />)}</div>
+          </>
         )}
         {kind === "tasks" && (
           <div className="m-tasks">{[0, 1, 2, 3].map((n) => <div key={n} style={{ "--n": n }}><i /><b /></div>)}</div>
@@ -634,17 +733,24 @@ function Chapter({ p, i, total, progress }) {
   return (
     <div className="chapter" style={{ "--i": i }}>
       <motion.article className="chapter-card spot" style={{ scale }} onMouseMove={spot}>
-        <div className="chapter-visual"><Mock kind={p.mock} /><span className="chapter-num">{p.number}</span></div>
+        <div className="chapter-visual"><Mock kind={p.mock} host={p.host} /><span className="chapter-num">{p.number}</span></div>
         <div className="chapter-copy">
-          <p className="chapter-type"><span>{p.number} / 0{total}</span>{p.type}</p>
+          <p className="chapter-type"><span>{p.number} / {String(total).padStart(2, "0")}</span>{p.type}</p>
           <h3>{p.title}</h3>
           <p className="chapter-desc">{p.description}</p>
           <ul className="chapter-points">{p.highlights.map((h) => <li key={h}>{h}</li>)}</ul>
           <div className="chips">{p.stack.map((s) => <span key={s}>{s}</span>)}</div>
-          {p.url ? (
-            <a className="project-link" href={p.url} target="_blank" rel="noreferrer" data-cursor="Visit">{p.label} <FaArrowUpRightFromSquare /></a>
+          {p.links.length > 0 ? (
+            <div className="chapter-links">
+              {p.links.map((l) => {
+                const Icon = l.icon;
+                return (
+                  <a key={l.url} className="project-link" href={l.url} target="_blank" rel="noreferrer" data-cursor="Visit">{l.label} <Icon /></a>
+                );
+              })}
+            </div>
           ) : (
-            <span className="project-link muted-link">{p.label}</span>
+            <span className="project-link muted-link">{p.note}</span>
           )}
         </div>
       </motion.article>
@@ -665,7 +771,7 @@ export default function Home() {
   const lastY = useRef(0);
   const toastTimer = useRef(null);
 
-  const { id: themeId, setId: setThemeId, colorsRef } = useTheme();
+  const { themeId, setThemeId, mode, setMode, resolved, toggleMode, colorsRef } = useAppearance();
   const role = useScramble(ROLES);
   const time = useMumbaiTime();
 
@@ -702,17 +808,23 @@ export default function Home() {
     return () => { document.body.style.overflow = ""; };
   }, [menu, palette]);
 
-  // Ctrl/Cmd + K opens the command palette
+  // Keyboard shortcuts: Ctrl/Cmd + K opens the command palette, T toggles light / dark
   useEffect(() => {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setPalette((v) => !v);
+        return;
+      }
+      const tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : "";
+      const typing = tag === "input" || tag === "textarea" || (e.target && e.target.isContentEditable);
+      if (!typing && !e.metaKey && !e.ctrlKey && !e.altKey && e.key.toLowerCase() === "t") {
+        toggleMode();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [toggleMode]);
 
   // Back-to-top visibility and navbar hide on scroll down / show on scroll up
   useEffect(() => {
@@ -759,7 +871,10 @@ export default function Home() {
     { id: "gm", group: "Contact", label: "Send an email", icon: SiGmail, run: () => (isMobile() ? (window.location.href = MAILTO_LINK) : openUrl(GMAIL_LINK)) },
     { id: "copy", group: "Contact", label: "Copy email address", icon: FaCopy, run: copyEmail },
     { id: "gh", group: "Links", label: "Open GitHub", icon: FaGithub, run: () => openUrl(GITHUB_LINK) },
-    { id: "rwitc", group: "Links", label: "Visit rwitc.com", icon: FaArrowUpRightFromSquare, run: () => openUrl("https://rwitc.com/") },
+    { id: "rwitc", group: "Links", label: "Visit rwitc.com", icon: FaArrowUpRightFromSquare, run: () => openUrl(RWITC_URL) },
+    { id: "intucate-web", group: "Links", label: "Open Intucate web app", icon: FaArrowUpRightFromSquare, run: () => openUrl(INTUCATE_WEB) },
+    { id: "intucate-app", group: "Links", label: "Intucate on Google Play", icon: FaGooglePlay, run: () => openUrl(INTUCATE_APP) },
+    ...MODES.map((m) => ({ id: `mode-${m.id}`, group: "Appearance", label: m.id === "system" ? "Use system theme" : `${m.name} mode`, icon: m.icon, run: () => setMode(m.id) })),
     ...THEMES.map((t) => ({ id: `theme-${t.id}`, group: "Theme", label: `${t.name} colours`, icon: FaPalette, run: () => setThemeId(t.id) }))
   ];
 
@@ -768,6 +883,7 @@ export default function Home() {
   return (
     <MotionConfig reducedMotion="user">
       <main className="portfolio" id="home">
+        <a className="skip" href="#about">Skip to content</a>
         <Background colorsRef={colorsRef} />
         <CustomCursor />
 
@@ -788,7 +904,8 @@ export default function Home() {
             </nav>
             <div className="nav-right">
               <button className="kbd-btn" onClick={() => setPalette(true)} aria-label="Open command palette"><FaMagnifyingGlass /> Search <kbd>Ctrl K</kbd></button>
-              <ThemeSwitcher themeId={themeId} setThemeId={setThemeId} />
+              <ModeToggle resolved={resolved} onToggle={toggleMode} />
+              <ThemeSwitcher themeId={themeId} setThemeId={setThemeId} mode={mode} setMode={setMode} />
               <a className="nav-cta" href="#contact" data-cursor="Talk">Let&apos;s talk <FaArrowRight /></a>
               <button className="burger" onClick={() => setMenu(true)} aria-label="Open menu"><FaBars /></button>
             </div>
@@ -807,6 +924,16 @@ export default function Home() {
                   </motion.a>
                 ))}
               </nav>
+              <div className="drawer-mode seg" role="radiogroup" aria-label="Appearance">
+                {MODES.map((m) => {
+                  const Icon = m.icon;
+                  return (
+                    <button key={m.id} role="radio" aria-checked={mode === m.id} className={`seg-item ${mode === m.id ? "on" : ""}`} onClick={() => setMode(m.id)}>
+                      <Icon /> <span>{m.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
               <p className="drawer-foot">{EMAIL}</p>
             </motion.div>
           )}
@@ -828,7 +955,7 @@ export default function Home() {
                 <Words className="h-line accent" text="work better." delay={0.65} />
               </h1>
               <motion.p variants={fadeUp} className="role-line"><span className="prompt">›</span><span className="role">{role}</span><span className="caret" /></motion.p>
-              <motion.p variants={fadeUp} className="intro">A full stack developer at ENATS LLP building responsive web experiences, mobile features and dependable backend solutions with Next.js, PHP and MySQL.</motion.p>
+              <motion.p variants={fadeUp} className="intro">A full stack developer at ENATS LLP building responsive web experiences, mobile features and dependable backend solutions with Next.js, React, PHP and MySQL.</motion.p>
               <motion.div variants={fadeUp}><ResumeButtons /></motion.div>
               <motion.div variants={fadeUp} className="socials">
                 {channels.map((c) => {
@@ -837,7 +964,7 @@ export default function Home() {
                     <a key={c.key} className={`social ${c.key}`} href={c.href} onClick={c.onClick} aria-label={c.name} {...(c.external ? { target: "_blank", rel: "noreferrer" } : {})}><Icon /></a>
                   );
                 })}
-                <span className="socials-hint">Press <kbd>Ctrl K</kbd> to explore</span>
+                <span className="socials-hint">Press <kbd>Ctrl K</kbd> to explore · <kbd>T</kbd> for light / dark</span>
               </motion.div>
             </motion.div>
 
@@ -970,7 +1097,7 @@ export default function Home() {
           <Label index="03">SELECTED WORK</Label>
           <div className="split">
             <Title a="Real work." b="Practical impact." />
-            <motion.p className="section-summary" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>Professional website work and personal projects, with the technologies and purpose behind each.</motion.p>
+            <motion.p className="section-summary" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2}>Personal and professional projects, with the technologies and purpose behind each.</motion.p>
           </div>
           <div className="chapters" ref={stackRef}>
             {projects.map((p, i) => <Chapter key={p.number} p={p} i={i} total={projects.length} progress={stackP} />)}
